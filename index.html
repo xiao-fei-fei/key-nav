@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .wrapper {
+      display: flex;
+      justify-content: center;
+    }
+    .wrapper > div {
+      width: 3em;
+      height: 3em;
+      text-align: center;
+      line-height: 3em;
+      border: 1px solid #c03;
+      margin: .4em;
+      cursor: pointer;
+    }
+    .used {
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    let keys = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
+    let hash = {q:'qq.com'}
+    if (window.localStorage.getItem('hash')) {
+      hash = JSON.parse(window.localStorage.getItem('hash'))
+    }
+    window.localStorage.setItem('hash', JSON.stringify(hash))
+    keys.map(v => {
+      let father = document.createElement('div')
+      father.className = 'wrapper'
+      v.split('').map(key => {
+        let child = document.createElement('div')
+        child.innerText = key
+        hash[key] && (child.className = 'used')
+        child.onclick = function () {
+          let web = prompt('请输入网址')
+          if (web) {
+            hash[key] = web
+            child.className = 'used'
+            window.localStorage.setItem('hash', JSON.stringify(hash))
+          }
+        }
+        father.appendChild(child)
+      })
+      document.body.appendChild(father)
+    })
+    document.onkeydown = function (e) {
+      hash[e.key] && window.open("http://" + hash[e.key])
+    }
+  </script>
+</body>
+</html>
